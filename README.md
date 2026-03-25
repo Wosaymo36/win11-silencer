@@ -3,6 +3,8 @@
 Windows 11 の「おせっかい」な機能や、バックグラウンドで動く不要なプログラムを停止させ、PCを本来の速さに戻すための設定生成ツールです。
 (A configuration tool to disable intrusive Windows 11 features and restore PC speed.)
 
+## 🚀 [>>> ここをクリックしてツールを開く / Open Tool <<<](https://wosaymo36.github.io/win11-silencer/)
+
 ---
 
 ## ⚠️ 重要：実行前の注意 / IMPORTANT: READ BEFORE USE
@@ -32,7 +34,7 @@ Windows 11 に標準で搭載されている、以下の機能を簡単に無効
 - **システム最適化 (System Optimization)**: Edge background suppression, Telemetry minimization.
 
 ## 🚀 使い方 / How to Use
-1. [Win11 Silencer を開く](https://wosaymo36.github.io/win11-silencer/)
+1. [Win11 Silencer を開く / Open Win11 Silencer](https://wosaymo36.github.io/win11-silencer/)
 2. 止めたい機能にチェックを入れます。 / Check the features you want to disable.
 3. **「出力を生成 (Generate)」**ボタンを押し、コードをコピーします。 / Click "Generate" and copy the code.
 
