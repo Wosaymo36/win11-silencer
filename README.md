@@ -1,4 +1,4 @@
-# Win11 Silencer
+# Windows11 Silencer
 
 Windows 11 の「おせっかい」な機能や、バックグラウンドで動く不要なプログラムを停止させ、PCを本来の速さに戻すための設定生成ツールです。
 (A configuration tool to disable intrusive Windows 11 features and restore PC speed.)
