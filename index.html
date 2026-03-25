@@ -40,7 +40,7 @@
 
   .container { max-width: 760px; margin: 0 auto; }
 
-  header { text-align: center; margin-bottom: 40px; }
+  header { text-align: center; margin-bottom: 20px; }
 
   .logo {
     font-family: 'Share Tech Mono', monospace;
@@ -59,20 +59,21 @@
   .subtitle {
     font-family: 'Share Tech Mono', monospace;
     color: var(--dim); font-size: 12px;
-    letter-spacing: 0.3em; text-transform: uppercase; margin-top: 8px;
+    letter-spacing: 0.2em; margin-top: 8px;
+    height: 1.5em;
   }
 
-  .badge {
-    display: inline-block;
-    background: rgba(0,229,255,0.08);
-    border: 1px solid rgba(0,229,255,0.25);
-    color: var(--accent);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px; padding: 3px 10px; border-radius: 2px;
-    margin-top: 12px; letter-spacing: 0.15em;
+  .lang-switcher {
+    display: flex; justify-content: center; gap: 8px; margin-top: 16px; margin-bottom: 30px;
   }
+  .lang-btn {
+    font-family: 'Share Tech Mono', monospace; font-size: 11px;
+    padding: 4px 12px; border-radius: 2px; border: 1px solid var(--border);
+    background: transparent; color: var(--dim); cursor: pointer; transition: all 0.2s;
+  }
+  .lang-btn:hover { border-color: var(--dim); }
+  .lang-btn.active { background: rgba(0,229,255,0.12); border-color: var(--accent); color: var(--accent); }
 
-  /* format bar */
   .format-bar {
     display: flex; align-items: center; gap: 8px;
     background: var(--surface); border: 1px solid var(--border);
@@ -90,13 +91,12 @@
   .fmt-btn:hover { border-color: var(--accent); color: var(--accent); }
   .fmt-btn.active { background: rgba(0,229,255,0.12); border-color: var(--accent); color: var(--accent); }
 
-  /* sections */
   .section {
     background: var(--surface); border: 1px solid var(--border);
     border-left: 3px solid var(--accent); margin-bottom: 16px;
     border-radius: 2px; overflow: hidden; transition: border-color 0.2s;
   }
-  .section:has(.item input:checked) { border-left-color: var(--green); }
+  .section:has(.item input[type="checkbox"]:checked) { border-left-color: var(--green); }
 
   .section-header {
     display: flex; align-items: center; padding: 14px 18px;
@@ -129,6 +129,8 @@
     padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer;
   }
   .item:last-child { border-bottom: none; }
+  .item.p2p-container { cursor: default; flex-direction: column; gap: 0; }
+  .p2p-top { display: flex; align-items: flex-start; gap: 12px; width: 100%; }
 
   .item input[type="checkbox"] {
     appearance: none; width: 16px; height: 16px; min-width: 16px;
@@ -146,7 +148,7 @@
   .item-name { font-size: 13px; font-weight: 700; color: #ddeeff; margin-bottom: 3px; }
   .item-desc { font-size: 11px; color: var(--dim); line-height: 1.5; }
 
-  .p2p-options { display: none; margin-top: 10px; gap: 12px; flex-wrap: wrap; }
+  .p2p-options { display: none; margin-top: 10px; gap: 12px; flex-wrap: wrap; padding-left: 28px; }
   .p2p-options label {
     display: flex; align-items: center; gap: 8px;
     cursor: pointer; font-size: 12px; color: var(--text);
@@ -154,17 +156,14 @@
   .p2p-options input[type="radio"] { accent-color: var(--accent); cursor: pointer; }
   .p2p-sub { color: var(--dim); font-size: 11px; }
 
-  /* actions */
-  .actions {
-    display: flex; gap: 12px; margin: 28px 0 16px; flex-wrap: wrap;
-  }
+  .actions { display: flex; gap: 12px; margin: 28px 0 16px; flex-wrap: wrap; }
   .btn {
     font-family: 'Share Tech Mono', monospace; font-size: 13px;
     letter-spacing: 0.1em; padding: 12px 24px; border-radius: 2px;
     border: none; cursor: pointer; transition: all 0.2s; flex: 1; min-width: 160px;
   }
   .btn-primary { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(0,229,255,0.3); }
-  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,229,255,0.5); transform: translateY(-1px); }
+  .btn-primary:hover:not(:disabled) { box-shadow: 0 0 30px rgba(0,229,255,0.5); transform: translateY(-1px); }
   .btn-primary:disabled { background: var(--dim); color: #333; box-shadow: none; cursor: default; transform: none; }
   .btn-secondary { background: transparent; color: var(--accent2); border: 1px solid var(--accent2); }
   .btn-secondary:hover { background: rgba(255,60,90,0.08); }
@@ -177,13 +176,9 @@
   }
   .counter strong { color: var(--accent); }
 
-  /* output panel */
   #output-panel {
-    margin-top: 28px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    display: none;
+    margin-top: 28px; border: 1px solid var(--border);
+    border-radius: 2px; overflow: hidden; display: none;
     animation: fadeIn 0.3s ease;
   }
   @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
@@ -193,29 +188,21 @@
     background: var(--surface2); padding: 10px 16px;
     border-bottom: 1px solid var(--border); gap: 12px; flex-wrap: wrap;
   }
-  .output-title {
-    font-family: 'Share Tech Mono', monospace; font-size: 12px;
-    color: var(--accent); letter-spacing: 0.1em;
-  }
-  .output-meta {
-    font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--dim);
-  }
+  .output-title { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.1em; }
+  .output-meta { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--dim); }
 
   .copy-btn {
     font-family: 'Share Tech Mono', monospace; font-size: 12px;
-    padding: 6px 18px; border-radius: 2px;
-    border: 1px solid var(--accent); background: rgba(0,229,255,0.08);
-    color: var(--accent); cursor: pointer; transition: all 0.15s;
-    white-space: nowrap;
+    padding: 6px 18px; border-radius: 2px; border: 1px solid var(--accent);
+    background: rgba(0,229,255,0.08); color: var(--accent);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
   }
   .copy-btn:hover { background: rgba(0,229,255,0.2); }
   .copy-btn.copied { border-color: var(--green); color: var(--green); background: rgba(0,255,153,0.08); }
 
   .output-instructions {
-    background: rgba(0,229,255,0.03);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 16px;
-    font-size: 11px; color: var(--dim); line-height: 1.8;
+    background: rgba(0,229,255,0.03); border-bottom: 1px solid var(--border);
+    padding: 10px 16px; font-size: 11px; color: var(--dim); line-height: 1.8;
   }
   .output-instructions strong { color: var(--accent); font-family: 'Share Tech Mono', monospace; }
   .step { display: flex; gap: 8px; }
@@ -223,431 +210,501 @@
 
   #output-code {
     display: block; width: 100%; min-height: 200px; max-height: 480px;
-    background: #080b0e; color: #a8c8e8;
-    font-family: 'Share Tech Mono', monospace; font-size: 11.5px;
-    line-height: 1.7; padding: 16px;
-    border: none; outline: none; resize: vertical;
-    overflow-y: auto; white-space: pre;
+    background: #080b0e; color: #a8c8e8; font-family: 'Share Tech Mono', monospace;
+    font-size: 11.5px; line-height: 1.7; padding: 16px; border: none;
+    outline: none; resize: vertical; overflow-y: auto; white-space: pre;
   }
 
-  /* warning */
   .warn-bar {
     background: rgba(255,60,90,0.06); border-top: 1px solid rgba(255,60,90,0.2);
     padding: 8px 16px; font-size: 11px; color: var(--accent2);
     font-family: 'Share Tech Mono', monospace;
   }
+  .ai-disclaimer {
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    padding: 12px; margin-top: 20px; font-size: 10px; color: var(--dim);
+    line-height: 1.6; border-radius: 2px; text-align: left;
+  }
 
   footer {
-    text-align: center; margin-top: 40px;
-    font-family: 'Share Tech Mono', monospace;
+    text-align: center; margin-top: 40px; font-family: 'Share Tech Mono', monospace;
     font-size: 10px; color: var(--dim); letter-spacing: 0.2em;
   }
 </style>
 </head>
 <body>
 <div class="container">
-<header>
-  <div class="logo">WIN11 <span>SILENCER</span></div>
-  <div class="subtitle">Windows 11 余計な機能 一括排除ツール</div>
-  <div class="badge">v1.2 — ページ内コピペ出力</div>
-</header>
-<div id="app"></div>
+  <header>
+    <div class="logo">WIN11 <span>SILENCER</span></div>
+    <div id="subtitle" class="subtitle"></div>
+    <div class="lang-switcher">
+      <button class="lang-btn" data-lang="ja">JP</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <div class="format-bar">
+    <span id="label-format" class="format-label"></span>
+    <button class="fmt-btn" data-fmt="reg">.reg</button>
+    <button class="fmt-btn" data-fmt="ps1">.ps1</button>
+  </div>
+
+  <div id="counter" class="counter"></div>
+  <div id="sections-container"></div>
+
+  <div class="actions">
+    <button id="btn-select-all" class="btn btn-outline"></button>
+    <button id="btn-generate" class="btn btn-primary" disabled></button>
+    <button id="btn-clear" class="btn btn-secondary"></button>
+  </div>
+
+  <div id="output-panel">
+    <div class="output-header">
+      <span id="output-title" class="output-title"></span>
+      <span id="output-meta" class="output-meta"></span>
+      <button id="copy-btn" class="copy-btn"></button>
+    </div>
+    <div id="output-instructions" class="output-instructions"></div>
+    <textarea id="output-code" readonly spellcheck="false"></textarea>
+    <div id="warn-bar" class="warn-bar"></div>
+  </div>
+
+  <div id="ai-note" class="ai-disclaimer"></div>
+
+  <footer>— win11 silencer — v2.0 —</footer>
+</div>
 
 <script>
-const SECTIONS = [
-  {
-    id:'ai', title:'01 // Recall & Copilot & Windows AI', risk:'mid', riskLabel:'MEDIUM',
-    items:[
-      { id:'recall', name:'Recall (AIスクショ監視) 完全無効化',
-        desc:'画面を常時キャプチャして解析するRecallを停止。プライバシー保護に最重要。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI]\n"DisableAIDataAnalysis"=dword:00000001\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall]\n"DisableRecall"=dword:00000001\n"AllowRecallEnablement"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI" /v DisableAIDataAnalysis /t REG_DWORD /d 1 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall" /v DisableRecall /t REG_DWORD /d 1 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall" /v AllowRecallEnablement /t REG_DWORD /d 0 /f`]},
-      { id:'copilot', name:'Copilot 完全無効化',
-        desc:'タスクバーのCopilotボタン・機能を丸ごと停止。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot]\n"TurnOffWindowsCopilot"=dword:00000001\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"ShowCopilotButton"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v ShowCopilotButton /t REG_DWORD /d 0 /f`]},
+// --- MULTI-LANGUAGE TEXT DATA ---
+const UI_TEXT = {
+  ja: {
+    subtitle: "Windows 11 余計な機能 一括排除ツール",
+    format: "出力形式 :",
+    selectAll: "全選択",
+    deselectAll: "全解除",
+    btn_selectAll: "すべて選択",
+    btn_generate: "▶ 出力を生成",
+    btn_clear: "クリア",
+    counter: "選択中: <strong>{count}</strong> / {total} 項目",
+    copy: "📋 コピー",
+    copied: "✓ コピーしました",
+    inst_title: "適用手順",
+    warn_bar: "⚠ HIGH リスク項目は適用前に復元ポイントの作成を推奨。レジストリ変更は自己責任で。",
+    ai_note: "【備考】本ツールおよび生成されるスクリプトは、生成AI (Gemini / Claude) を活用して作成・検証されています。実行内容が不安な場合は、生成されたコードをAIに貼り付けて安全性を確認することをおすすめします。",
+    p2p_off: "完全無効",
+    p2p_off_sub: "— インターネット・LAN両方停止",
+    p2p_lan: "LAN内のみ",
+    p2p_lan_sub: "— 家庭内・社内LANは許可、インターネットは遮断",
+    reg_steps: [
+      "コピーボタンを押してクリップボードにコピー",
+      "メモ帳を開き、貼り付け（Ctrl+V）",
+      "「名前をつけて保存」→ファイル名を <span style=\"color:var(--accent)\">fix.reg</span>、文字コードを <span style=\"color:var(--accent)\">UTF-16 LE (または Unicode)</span> にして保存",
+      "ファイルをダブルクリック → 「はい」で適用 → PCを再起動"
+    ],
+    ps1_steps: [
+      "コピーボタンを押してクリップボードにコピー",
+      "スタートで「PowerShell」を検索 → <span style=\"color:var(--accent)\">右クリック → 管理者として実行</span>",
+      "PowerShellウィンドウに貼り付け（右クリック or Ctrl+V）してEnter",
+      "完了メッセージを確認 → PCを再起動"
     ]
   },
-  {
-    id:'onedrive', title:'02 // OneDrive 完全沈黙', risk:'high', riskLabel:'HIGH',
-    items:[
-      { id:'od_icon', name:'エクスプローラー左のOneDriveアイコン削除',
-        desc:'サイドバーに表示される空のOneDriveアイコンをレジストリから除去。',
-        reg:`[-HKEY_CLASSES_ROOT\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}]\n[-HKEY_CLASSES_ROOT\\Wow6432Node\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}]`,
-        ps:[`reg delete "HKCR\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f 2>$null`,
-            `reg delete "HKCR\\Wow6432Node\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f 2>$null`]},
-      { id:'od_sync', name:'OneDriveファイル同期を禁止',
-        desc:'ポリシーでファイル同期を完全に無効化。',
-        reg:`[HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\OneDrive]\n"DisableFileSync"=dword:00000001`,
-        ps:[`reg add "HKLM\\Software\\Policies\\Microsoft\\Windows\\OneDrive" /v DisableFileSync /t REG_DWORD /d 1 /f`]},
-      { id:'od_doc', name:'ドキュメント → ローカルに戻す',
-        desc:'OneDriveにリダイレクトされたドキュメントを %USERPROFILE%\\Documents へ復旧。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"Personal"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,63,00,75,00,6d,00,65,00,6e,00,74,00,73,00,00,00\n"{f42ee2d3-909f-4a11-a066-444efc280a32}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,63,00,75,00,6d,00,65,00,6e,00,74,00,73,00,00,00`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v Personal /t REG_EXPAND_SZ /d "%USERPROFILE%\\Documents" /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{f42ee2d3-909f-4a11-a066-444efc280a32}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Documents" /f`]},
-      { id:'od_pic', name:'ピクチャ → ローカルに戻す',
-        desc:'OneDriveにリダイレクトされたピクチャを %USERPROFILE%\\Pictures へ復旧。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"My Pictures"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,50,00,69,00,63,00,74,00,75,00,72,00,65,00,73,00,00,00\n"{0ddd015d-b06c-45d5-8c4c-f59713854639}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,50,00,69,00,63,00,74,00,75,00,72,00,65,00,73,00,00,00`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "My Pictures" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Pictures" /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{0ddd015d-b06c-45d5-8c4c-f59713854639}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Pictures" /f`]},
-      { id:'od_music', name:'ミュージック → ローカルに戻す',
-        desc:'OneDriveにリダイレクトされたミュージックを %USERPROFILE%\\Music へ復旧。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"My Music"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,4d,00,75,00,73,00,69,00,63,00,00,00\n"{a0c69a99-21c8-4671-8703-7934162fcf1d}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,4d,00,75,00,73,00,69,00,63,00,00,00`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "My Music" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Music" /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{a0c69a99-21c8-4671-8703-7934162fcf1d}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Music" /f`]},
-      { id:'od_dl', name:'ダウンロード → ローカルに戻す',
-        desc:'OneDriveにリダイレクトされたダウンロードを %USERPROFILE%\\Downloads へ復旧。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"{374DE290-123F-4565-9164-39C4925E467B}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,77,00,6e,00,6c,00,6f,00,61,00,64,00,73,00,00,00`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{374DE290-123F-4565-9164-39C4925E467B}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Downloads" /f`]},
-      { id:'od_desktop', name:'デスクトップ → ローカルに戻す',
-        desc:'OneDriveにリダイレクトされたデスクトップを %USERPROFILE%\\Desktop へ復旧。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"Desktop"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,65,00,73,00,6b,00,74,00,6f,00,70,00,00,00`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v Desktop /t REG_EXPAND_SZ /d "%USERPROFILE%\\Desktop" /f`]},
+  en: {
+    subtitle: "Windows 11 Debloat & Privacy Tool",
+    format: "Output Format:",
+    selectAll: "Select All",
+    deselectAll: "Deselect All",
+    btn_selectAll: "Select All",
+    btn_generate: "▶ Generate Output",
+    btn_clear: "Clear All",
+    counter: "Selected: <strong>{count}</strong> / {total} items",
+    copy: "📋 Copy",
+    copied: "✓ Copied",
+    inst_title: "Instructions",
+    warn_bar: "⚠ HIGH risk items: Creating a Restore Point before applying is strongly recommended. Use at your own risk.",
+    ai_note: "[Note] This tool was developed and verified using AI (Gemini / Claude). If you are unsure about the changes, we recommend pasting the generated code into an AI to verify its safety before execution.",
+    p2p_off: "Disable All",
+    p2p_off_sub: "— Stop both Internet and LAN sharing",
+    p2p_lan: "LAN Only",
+    p2p_lan_sub: "— Allow local network, block Internet",
+    reg_steps: [
+      "Click the Copy button.",
+      "Open Notepad and paste the code.",
+      "Save as <span style=\"color:var(--accent)\">fix.reg</span>, ensure Encoding is set to <span style=\"color:var(--accent)\">UTF-16 LE</span> (or Unicode).",
+      "Double-click the file, select 'Yes', then Restart your PC."
+    ],
+    ps1_steps: [
+      "Click the Copy button.",
+      "Search for 'PowerShell' in Start Menu → <span style=\"color:var(--accent)\">Right-click → Run as Administrator</span>",
+      "Right-click inside the window to paste, then press Enter.",
+      "Wait for completion, then Restart your PC."
     ]
-  },
-  {
-    id:'edge', title:'03 // Edge 暴走停止', risk:'low', riskLabel:'LOW',
-    items:[
-      { id:'edge_boost', name:'スタートアップブースト・プリロード 無効化',
-        desc:'起動時にEdgeがバックグラウンドで先読みするのを停止。メモリ節約。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Edge]\n"StartupBoostEnabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\MicrosoftEdge\\Main]\n"AllowPrelaunch"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v StartupBoostEnabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\MicrosoftEdge\\Main" /v AllowPrelaunch /t REG_DWORD /d 0 /f`]},
-      { id:'edge_sidebar', name:'サイドバー（ハブ）非表示',
-        desc:'Edge右側のAIサイドバーを無効化。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Edge]\n"HubsSidebarEnabled"=dword:00000000\n"StandaloneHubsSidebarEnabled"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v HubsSidebarEnabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v StandaloneHubsSidebarEnabled /t REG_DWORD /d 0 /f`]},
-      { id:'edge_update', name:'Edge 自動更新を抑制',
-        desc:'自動更新チェックを停止。手動更新は引き続き可能。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate]\n"AutoUpdateCheckPeriodMinutes"=dword:00000000\n"UpdateDefault"=dword:00000000\n"DisableAutoUpdateChecksCheckboxValue"=dword:00000001`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v AutoUpdateCheckPeriodMinutes /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v UpdateDefault /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v DisableAutoUpdateChecksCheckboxValue /t REG_DWORD /d 1 /f`]},
-    ]
-  },
-  {
-    id:'ui', title:'04 // UI 浄化（右クリック・検索・スタートメニュー）', risk:'low', riskLabel:'LOW',
-    items:[
-      { id:'rightclick', name:'右クリックメニューをWin10仕様に戻す',
-        desc:'「その他のオプションを表示」を廃止してすべての項目を即表示。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32]\n@=""`,
-        ps:[`reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /ve /t REG_SZ /d "" /f`]},
-      { id:'widget', name:'ウィジェット（ニュース/天気）無効化',
-        desc:'タスクバー左のウィジェットボタンとパネルを完全停止。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Dsh]\n"AllowNewsAndInterests"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"TaskbarDa"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v TaskbarDa /t REG_DWORD /d 0 /f`]},
-      { id:'search_bing', name:'検索窓のBing統合・動的コンテンツ無効化',
-        desc:'スタートの検索をローカル完結にし、Bingの広告イラストを除去。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search]\n"BingSearchEnabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search]\n"EnableDynamicContentInSearch"=dword:00000000`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search" /v BingSearchEnabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v EnableDynamicContentInSearch /t REG_DWORD /d 0 /f`]},
-      { id:'start_ads', name:'スタートメニュー広告・おすすめ削除',
-        desc:'「おすすめ」「ヒント」「アプリの提案」などの広告枠を一掃。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager]\n"SubscribedContent-338388Enabled"=dword:00000000\n"SubscribedContent-310093Enabled"=dword:00000000\n"SubscribedContent-338389Enabled"=dword:00000000\n"SubscribedContent-353694Enabled"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"Start_Recommendations"=dword:00000000`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-338388Enabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-310093Enabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-353694Enabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v Start_Recommendations /t REG_DWORD /d 0 /f`]},
-      { id:'cortana', name:'Cortana 完全無効化',
-        desc:'Cortana・音声アシスタント・ロケーション連携を停止。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search]\n"AllowCortana"=dword:00000000\n"AllowCortanaAboveLock"=dword:00000000\n"AllowSearchToUseLocation"=dword:00000000`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowCortana /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowCortanaAboveLock /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowSearchToUseLocation /t REG_DWORD /d 0 /f`]},
-      { id:'gamebar', name:'Xbox Game Bar 無効化',
-        desc:'Win+Gのゲームバーと自動ゲームモード検出を停止。',
-        reg:`[HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\GameBar]\n"ShowStartupPanel"=dword:00000000\n"AutoGameModeEnabled"=dword:00000000\n"AllowAutoGameMode"=dword:00000000`,
-        ps:[`reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v ShowStartupPanel /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v AutoGameModeEnabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 0 /f`]},
-    ]
-  },
-  {
-    id:'telemetry', title:'05 // テレメトリ・強制アップデート停止', risk:'high', riskLabel:'HIGH',
-    items:[
-      { id:'telemetry_item', name:'診断データ送信を最小化',
-        desc:'テレメトリを最低レベルに設定。DiagTrackサービス・dmwappushserviceを無効化。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection]\n"AllowTelemetry"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack]\n"Start"=dword:00000004\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\dmwappushservice]\n"Start"=dword:00000004`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack" /v Start /t REG_DWORD /d 4 /f`,
-            `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\dmwappushservice" /v Start /t REG_DWORD /d 4 /f`]},
-      { id:'adid', name:'広告ID・アクティビティ履歴追跡 禁止',
-        desc:'広告IDのパーソナライズとアクティビティフィード送信を無効化。',
-        reg:`[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo]\n"Enabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System]\n"EnableActivityFeed"=dword:00000000\n"PublishUserActivities"=dword:00000000\n"UploadUserActivities"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Siuf\\Rules]\n"NumberOfSIUFInPeriod"=dword:00000000\n"PeriodInNanoSeconds"=dword:00000000`,
-        ps:[`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v EnableActivityFeed /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v PublishUserActivities /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v UploadUserActivities /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Siuf\\Rules" /v NumberOfSIUFInPeriod /t REG_DWORD /d 0 /f`,
-            `reg add "HKCU\\Software\\Microsoft\\Siuf\\Rules" /v PeriodInNanoSeconds /t REG_DWORD /d 0 /f`]},
-      { id:'update', name:'Windows Update を通知のみに変更',
-        desc:'自動ダウンロード・インストールを停止し通知のみに変更。UpdateOrchestratorを手動に。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU]\n"NoAutoUpdate"=dword:00000000\n"AUOptions"=dword:00000002\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\UsoSvc]\n"Start"=dword:00000003`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU" /v NoAutoUpdate /t REG_DWORD /d 0 /f`,
-            `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU" /v AUOptions /t REG_DWORD /d 2 /f`,
-            `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\UsoSvc" /v Start /t REG_DWORD /d 3 /f`]},
-      { id:'store_update', name:'ストアアプリ自動更新 停止',
-        desc:'Microsoft Storeのバックグラウンド自動更新を停止。',
-        reg:`[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\WindowsStore]\n"AutoDownload"=dword:00000002`,
-        ps:[`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore" /v AutoDownload /t REG_DWORD /d 2 /f`]},
-      { id:'delivery', name:'Delivery Optimization（P2P配信）', desc:'', isP2P:true, reg:'', ps:[] },
-    ]
-  },
-];
-
-let currentFormat = 'reg';
-
-const INSTRUCTIONS = {
-  reg:[
-    'コピーボタンを押してクリップボードにコピー',
-    'メモ帳を開き、貼り付け（Ctrl+V）',
-    '「名前をつけて保存」→ファイル名を <span style="color:var(--accent)">fix.reg</span>、文字コードを <span style="color:var(--accent)">Unicode</span> にして保存',
-    'ファイルをダブルクリック → 「はい」で適用 → 再起動',
-  ],
-  ps1:[
-    'コピーボタンを押してクリップボードにコピー',
-    'スタートで「PowerShell」を検索 → <span style="color:var(--accent)">右クリック → 管理者として実行</span>',
-    'PowerShellウィンドウに貼り付け（右クリック or Ctrl+V）してEnter',
-    '完了メッセージを確認 → 再起動',
-  ],
+  }
 };
 
-function buildUI() {
-  const app = document.getElementById('app');
+// --- FULL ITEMS DATA ---
+const SECTIONS = [
+  {
+    id: 'ai', risk: 'mid', riskLabel: 'MEDIUM',
+    title: { ja: '01 // Recall & Copilot & Windows AI', en: '01 // AI & Recall Control' },
+    items: [
+      { id: 'recall', 
+        name: { ja: 'Recall (AIスクショ監視) 完全無効化', en: 'Disable Windows Recall' },
+        desc: { ja: '画面を常時キャプチャして解析するRecallを停止。プライバシー保護に最重要。', en: 'Stop the OS from taking constant snapshots of your screen.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI]\n"DisableAIDataAnalysis"=dword:00000001\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall]\n"DisableRecall"=dword:00000001\n"AllowRecallEnablement"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI" /v DisableAIDataAnalysis /t REG_DWORD /d 1 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall" /v DisableRecall /t REG_DWORD /d 1 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Recall" /v AllowRecallEnablement /t REG_DWORD /d 0 /f`] },
+      { id: 'copilot', 
+        name: { ja: 'Copilot 完全無効化', en: 'Disable Copilot Completely' },
+        desc: { ja: 'タスクバーのCopilotボタン・機能を丸ごと停止。', en: 'Remove Copilot button and disable its features globally.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot]\n"TurnOffWindowsCopilot"=dword:00000001\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"ShowCopilotButton"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot" /v TurnOffWindowsCopilot /t REG_DWORD /d 1 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v ShowCopilotButton /t REG_DWORD /d 0 /f`] }
+    ]
+  },
+  {
+    id: 'onedrive', risk: 'high', riskLabel: 'HIGH',
+    title: { ja: '02 // OneDrive 完全沈黙', en: '02 // OneDrive & Folder Sync' },
+    items: [
+      { id: 'od_icon', 
+        name: { ja: 'エクスプローラー左のOneDriveアイコン削除', en: 'Remove OneDrive Icon from Explorer' },
+        desc: { ja: 'サイドバーに表示される空のOneDriveアイコンをレジストリから除去。', en: 'Remove the empty OneDrive shortcut from the sidebar.' },
+        reg: `[-HKEY_CLASSES_ROOT\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}]\n[-HKEY_CLASSES_ROOT\\Wow6432Node\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}]`,
+        ps: [`reg delete "HKCR\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f 2>$null`, `reg delete "HKCR\\Wow6432Node\\CLSID\\{018D5C66-4533-4307-9B53-224DE2ED1FE6}" /f 2>$null`] },
+      { id: 'od_sync', 
+        name: { ja: 'OneDriveファイル同期を禁止', en: 'Disable OneDrive File Sync' },
+        desc: { ja: 'ポリシーでファイル同期を完全に無効化。', en: 'Prevent OneDrive from syncing files via policy.' },
+        reg: `[HKEY_LOCAL_MACHINE\\Software\\Policies\\Microsoft\\Windows\\OneDrive]\n"DisableFileSync"=dword:00000001`,
+        ps: [`reg add "HKLM\\Software\\Policies\\Microsoft\\Windows\\OneDrive" /v DisableFileSync /t REG_DWORD /d 1 /f`] },
+      { id: 'od_doc', 
+        name: { ja: 'ドキュメント → ローカルに戻す', en: 'Restore Documents to Local' },
+        desc: { ja: 'OneDriveにリダイレクトされたドキュメントを %USERPROFILE%\\Documents へ復旧。', en: 'Fix Documents folder path back to your local user profile.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"Personal"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,63,00,75,00,6d,00,65,00,6e,00,74,00,73,00,00,00\n"{f42ee2d3-909f-4a11-a066-444efc280a32}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,63,00,75,00,6d,00,65,00,6e,00,74,00,73,00,00,00`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v Personal /t REG_EXPAND_SZ /d "%USERPROFILE%\\Documents" /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{f42ee2d3-909f-4a11-a066-444efc280a32}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Documents" /f`] },
+      { id: 'od_pic', 
+        name: { ja: 'ピクチャ → ローカルに戻す', en: 'Restore Pictures to Local' },
+        desc: { ja: 'OneDriveにリダイレクトされたピクチャを %USERPROFILE%\\Pictures へ復旧。', en: 'Fix Pictures folder path back to your local user profile.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"My Pictures"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,50,00,69,00,63,00,74,00,75,00,72,00,65,00,73,00,00,00\n"{0ddd015d-b06c-45d5-8c4c-f59713854639}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,50,00,69,00,63,00,74,00,75,00,72,00,65,00,73,00,00,00`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "My Pictures" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Pictures" /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{0ddd015d-b06c-45d5-8c4c-f59713854639}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Pictures" /f`] },
+      { id: 'od_music', 
+        name: { ja: 'ミュージック → ローカルに戻す', en: 'Restore Music to Local' },
+        desc: { ja: 'OneDriveにリダイレクトされたミュージックを %USERPROFILE%\\Music へ復旧。', en: 'Fix Music folder path back to your local user profile.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"My Music"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,4d,00,75,00,73,00,69,00,63,00,00,00\n"{a0c69a99-21c8-4671-8703-7934162fcf1d}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,4d,00,75,00,73,00,69,00,63,00,00,00`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "My Music" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Music" /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{a0c69a99-21c8-4671-8703-7934162fcf1d}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Music" /f`] },
+      { id: 'od_dl', 
+        name: { ja: 'ダウンロード → ローカルに戻す', en: 'Restore Downloads to Local' },
+        desc: { ja: 'OneDriveにリダイレクトされたダウンロードを %USERPROFILE%\\Downloads へ復旧。', en: 'Fix Downloads folder path back to your local user profile.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"{374DE290-123F-4565-9164-39C4925E467B}"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,6f,00,77,00,6e,00,6c,00,6f,00,61,00,64,00,73,00,00,00`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v "{374DE290-123F-4565-9164-39C4925E467B}" /t REG_EXPAND_SZ /d "%USERPROFILE%\\Downloads" /f`] },
+      { id: 'od_desktop', 
+        name: { ja: 'デスクトップ → ローカルに戻す', en: 'Restore Desktop to Local' },
+        desc: { ja: 'OneDriveにリダイレクトされたデスクトップを %USERPROFILE%\\Desktop へ復旧。', en: 'Fix Desktop path back to your local user profile.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders]\n"Desktop"=hex(2):25,00,55,00,53,00,45,00,52,00,50,00,52,00,4f,00,46,00,49,00,4c,00,45,00,25,00,5c,00,44,00,65,00,73,00,6b,00,74,00,6f,00,70,00,00,00`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders" /v Desktop /t REG_EXPAND_SZ /d "%USERPROFILE%\\Desktop" /f`] }
+    ]
+  },
+  {
+    id: 'edge', risk: 'low', riskLabel: 'LOW',
+    title: { ja: '03 // Edge 暴走停止', en: '03 // Microsoft Edge Control' },
+    items: [
+      { id: 'edge_boost', 
+        name: { ja: 'スタートアップブースト・プリロード 無効化', en: 'Disable Startup Boost & Preload' },
+        desc: { ja: '起動時にEdgeがバックグラウンドで先読みするのを停止。メモリ節約。', en: 'Prevent Edge from running in the background at startup to save memory.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Edge]\n"StartupBoostEnabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\MicrosoftEdge\\Main]\n"AllowPrelaunch"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v StartupBoostEnabled /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\MicrosoftEdge\\Main" /v AllowPrelaunch /t REG_DWORD /d 0 /f`] },
+      { id: 'edge_sidebar', 
+        name: { ja: 'サイドバー（ハブ）非表示', en: 'Disable Edge Sidebar' },
+        desc: { ja: 'Edge右側のAIサイドバーを無効化。', en: 'Remove the AI and Hub sidebar from Edge.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Edge]\n"HubsSidebarEnabled"=dword:00000000\n"StandaloneHubsSidebarEnabled"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v HubsSidebarEnabled /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge" /v StandaloneHubsSidebarEnabled /t REG_DWORD /d 0 /f`] },
+      { id: 'edge_update', 
+        name: { ja: 'Edge 自動更新を抑制', en: 'Suppress Edge Auto-Update' },
+        desc: { ja: '自動更新チェックを停止。手動更新は引き続き可能。', en: 'Stop Edge background update checks.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate]\n"AutoUpdateCheckPeriodMinutes"=dword:00000000\n"UpdateDefault"=dword:00000000\n"DisableAutoUpdateChecksCheckboxValue"=dword:00000001`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v AutoUpdateCheckPeriodMinutes /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v UpdateDefault /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\EdgeUpdate" /v DisableAutoUpdateChecksCheckboxValue /t REG_DWORD /d 1 /f`] }
+    ]
+  },
+  {
+    id: 'ui', risk: 'low', riskLabel: 'LOW',
+    title: { ja: '04 // UI 浄化（右クリック・検索・スタート）', en: '04 // Interface Cleanup' },
+    items: [
+      { id: 'rightclick', 
+        name: { ja: '右クリックメニューをWin10仕様に戻す', en: 'Restore Classic Context Menu' },
+        desc: { ja: '「その他のオプションを表示」を廃止してすべての項目を即表示。', en: 'Remove "Show more options" and display full menu immediately.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32]\n@=""`,
+        ps: [`reg add "HKCU\\Software\\Classes\\CLSID\\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\\InprocServer32" /ve /t REG_SZ /d "" /f`] },
+      { id: 'widget', 
+        name: { ja: 'ウィジェット（ニュース/天気）無効化', en: 'Disable Taskbar Widgets' },
+        desc: { ja: 'タスクバー左のウィジェットボタンとパネルを完全停止。', en: 'Remove weather and news widgets from the taskbar.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Dsh]\n"AllowNewsAndInterests"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"TaskbarDa"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v TaskbarDa /t REG_DWORD /d 0 /f`] },
+      { id: 'search_bing', 
+        name: { ja: '検索窓のBing統合・動的コンテンツ無効化', en: 'Disable Web Search & Bing in Start' },
+        desc: { ja: 'スタートの検索をローカル完結にし、Bingの広告イラストを除去。', en: 'Remove Bing web results and dynamic illustrations from Search.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Search]\n"BingSearchEnabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search]\n"EnableDynamicContentInSearch"=dword:00000000`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Search" /v BingSearchEnabled /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v EnableDynamicContentInSearch /t REG_DWORD /d 0 /f`] },
+      { id: 'start_ads', 
+        name: { ja: 'スタートメニュー広告・おすすめ削除', en: 'Remove Ads & Recommendations' },
+        desc: { ja: '「おすすめ」「ヒント」「アプリの提案」などの広告枠を一掃。', en: 'Disable app suggestions, tips, and ads in the Start Menu.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager]\n"SubscribedContent-338388Enabled"=dword:00000000\n"SubscribedContent-310093Enabled"=dword:00000000\n"SubscribedContent-338389Enabled"=dword:00000000\n"SubscribedContent-353694Enabled"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced]\n"Start_Recommendations"=dword:00000000`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-338388Enabled /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-310093Enabled /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-338389Enabled /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager" /v SubscribedContent-353694Enabled /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced" /v Start_Recommendations /t REG_DWORD /d 0 /f`] },
+      { id: 'cortana', 
+        name: { ja: 'Cortana 完全無効化', en: 'Disable Cortana Completely' },
+        desc: { ja: 'Cortana・音声アシスタント・ロケーション連携を停止。', en: 'Stop Cortana, voice assistance, and location tracking.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search]\n"AllowCortana"=dword:00000000\n"AllowCortanaAboveLock"=dword:00000000\n"AllowSearchToUseLocation"=dword:00000000`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowCortana /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowCortanaAboveLock /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search" /v AllowSearchToUseLocation /t REG_DWORD /d 0 /f`] },
+      { id: 'gamebar', 
+        name: { ja: 'Xbox Game Bar 無効化', en: 'Disable Xbox Game Bar' },
+        desc: { ja: 'Win+Gのゲームバーと自動ゲームモード検出を停止。', en: 'Stop Game Bar background process and auto game detection.' },
+        reg: `[HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\GameBar]\n"ShowStartupPanel"=dword:00000000\n"AutoGameModeEnabled"=dword:00000000\n"AllowAutoGameMode"=dword:00000000`,
+        ps: [`reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v ShowStartupPanel /t REG_DWORD /d 0 /f`, `reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v AutoGameModeEnabled /t REG_DWORD /d 0 /f`, `reg add "HKCU\\SOFTWARE\\Microsoft\\GameBar" /v AllowAutoGameMode /t REG_DWORD /d 0 /f`] }
+    ]
+  },
+  {
+    id: 'telemetry', risk: 'high', riskLabel: 'HIGH',
+    title: { ja: '05 // テレメトリ・強制アップデート停止', en: '05 // Telemetry & Update Control' },
+    items: [
+      { id: 'telemetry_item', 
+        name: { ja: '診断データ送信を最小化', en: 'Minimize Diagnostic Data' },
+        desc: { ja: 'テレメトリを最低レベルに設定。DiagTrackサービス等を無効化。', en: 'Set telemetry to lowest level. Disable DiagTrack services.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection]\n"AllowTelemetry"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack]\n"Start"=dword:00000004\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\dmwappushservice]\n"Start"=dword:00000004`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection" /v AllowTelemetry /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\DiagTrack" /v Start /t REG_DWORD /d 4 /f`, `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\dmwappushservice" /v Start /t REG_DWORD /d 4 /f`] },
+      { id: 'adid', 
+        name: { ja: '広告ID・アクティビティ履歴追跡 禁止', en: 'Disable Ad-ID & Activity History' },
+        desc: { ja: '広告IDのパーソナライズとアクティビティフィード送信を無効化。', en: 'Stop personalized tracking and activity feed uploads.' },
+        reg: `[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo]\n"Enabled"=dword:00000000\n\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\System]\n"EnableActivityFeed"=dword:00000000\n"PublishUserActivities"=dword:00000000\n"UploadUserActivities"=dword:00000000\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Siuf\\Rules]\n"NumberOfSIUFInPeriod"=dword:00000000\n"PeriodInNanoSeconds"=dword:00000000`,
+        ps: [`reg add "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo" /v Enabled /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v EnableActivityFeed /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v PublishUserActivities /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System" /v UploadUserActivities /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Siuf\\Rules" /v NumberOfSIUFInPeriod /t REG_DWORD /d 0 /f`, `reg add "HKCU\\Software\\Microsoft\\Siuf\\Rules" /v PeriodInNanoSeconds /t REG_DWORD /d 0 /f`] },
+      { id: 'update', 
+        name: { ja: 'Windows Update を通知のみに変更', en: 'Set Windows Update to Notify Only' },
+        desc: { ja: '自動ダウンロード・インストールを停止し通知のみに変更。', en: 'Stop automatic download/install. Notify for updates instead.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU]\n"NoAutoUpdate"=dword:00000000\n"AUOptions"=dword:00000002\n\n[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\UsoSvc]\n"Start"=dword:00000003`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU" /v NoAutoUpdate /t REG_DWORD /d 0 /f`, `reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU" /v AUOptions /t REG_DWORD /d 2 /f`, `reg add "HKLM\\SYSTEM\\CurrentControlSet\\Services\\UsoSvc" /v Start /t REG_DWORD /d 3 /f`] },
+      { id: 'store_update', 
+        name: { ja: 'ストアアプリ自動更新 停止', en: 'Disable Store App Auto-Update' },
+        desc: { ja: 'Microsoft Storeのバックグラウンド自動更新を停止。', en: 'Stop automatic background updates for Microsoft Store apps.' },
+        reg: `[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\WindowsStore]\n"AutoDownload"=dword:00000002`,
+        ps: [`reg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore" /v AutoDownload /t REG_DWORD /d 2 /f`] },
+      { id: 'delivery', 
+        name: { ja: 'Delivery Optimization（P2P配信）', en: 'Delivery Optimization (P2P)' },
+        desc: { ja: 'PCを他人のWindowsUpdate配信の中継に使わせる機能。自分の回線帯域が消費される。', en: 'Stop Windows from using your bandwidth to send updates to other PCs.' },
+        isP2P: true, reg: '', ps: [] }
+    ]
+  }
+];
 
-  const counter = document.createElement('div');
-  counter.className = 'counter'; counter.id = 'counter';
-  app.appendChild(counter);
+let lang = 'ja';
+let currentFormat = 'reg';
 
-  // format bar
-  const fbar = document.createElement('div');
-  fbar.className = 'format-bar';
-  fbar.innerHTML = `
-    <span class="format-label">出力形式 :</span>
-    <button class="fmt-btn active" data-fmt="reg">.reg（レジストリ）</button>
-    <button class="fmt-btn" data-fmt="ps1">.ps1（PowerShell）</button>
-  `;
-  app.appendChild(fbar);
-  fbar.querySelectorAll('.fmt-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentFormat = btn.dataset.fmt;
-      fbar.querySelectorAll('.fmt-btn').forEach(b => b.classList.toggle('active', b === btn));
-      refreshOutput();
-    });
-  });
+function updateUI() {
+  const t = UI_TEXT[lang];
+  document.getElementById('subtitle').textContent = t.subtitle;
+  document.getElementById('label-format').textContent = t.format;
+  document.getElementById('btn-select-all').textContent = t.btn_selectAll;
+  document.getElementById('btn-generate').textContent = t.btn_generate;
+  document.getElementById('btn-clear').textContent = t.btn_clear;
+  document.getElementById('copy-btn').textContent = t.copy;
+  document.getElementById('warn-bar').textContent = t.warn_bar;
+  document.getElementById('ai-note').textContent = t.ai_note;
+  
+  renderSections();
+  updateCounter();
+}
 
-  // sections
+function renderSections() {
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+  
   SECTIONS.forEach(sec => {
     const section = document.createElement('div');
     section.className = 'section';
-    const riskClass = sec.risk === 'low' ? 'low' : sec.risk === 'mid' ? 'mid' : 'high';
-    const header = document.createElement('div');
-    header.className = 'section-header';
-    header.innerHTML = `
-      <div class="section-title">${sec.title}</div>
-      <span class="section-risk risk-${riskClass}">${sec.riskLabel}</span>
-      <button class="toggle-all-btn">全選択</button>
+    section.innerHTML = `
+      <div class="section-header">
+        <div class="section-title">${sec.title[lang]}</div>
+        <span class="section-risk risk-${sec.risk}">${sec.riskLabel}</span>
+        <button class="toggle-all-btn" onclick="toggleSec('${sec.id}')">${UI_TEXT[lang].selectAll}</button>
+      </div>
+      <div class="section-body" id="body-${sec.id}"></div>
     `;
-    const body = document.createElement('div');
-    body.className = 'section-body';
-
+    container.appendChild(section);
+    
+    const body = section.querySelector('.section-body');
+    
     sec.items.forEach(item => {
       if (item.isP2P) {
         const row = document.createElement('div');
-        row.className = 'item'; row.style.cursor = 'default';
+        row.className = 'item p2p-container';
         row.innerHTML = `
-          <input type="checkbox" id="delivery_enable" style="margin-top:3px">
-          <div class="item-info">
-            <div class="item-name">${item.name}</div>
-            <div class="item-desc">PCを他人のWindowsUpdate配信の中継に使わせる機能。自分の回線帯域が消費される。</div>
-            <div class="p2p-options" id="p2p_options">
-              <label><input type="radio" name="p2p_mode" value="disable" checked> 完全無効 <span class="p2p-sub">— インターネット・LAN両方停止</span></label>
-              <label><input type="radio" name="p2p_mode" value="lan"> LAN内のみ <span class="p2p-sub">— 家庭内・社内LANは許可、インターネットは遮断</span></label>
+          <div class="p2p-top">
+            <input type="checkbox" id="delivery_enable" style="margin-top:3px" onchange="toggleP2P()">
+            <div class="item-info">
+              <div class="item-name">${item.name[lang]}</div>
+              <div class="item-desc">${item.desc[lang]}</div>
             </div>
+          </div>
+          <div class="p2p-options" id="p2p_options">
+            <label><input type="radio" name="p2p_mode" value="disable" checked> 
+              ${UI_TEXT[lang].p2p_off} <span class="p2p-sub">${UI_TEXT[lang].p2p_off_sub}</span>
+            </label>
+            <label><input type="radio" name="p2p_mode" value="lan"> 
+              ${UI_TEXT[lang].p2p_lan} <span class="p2p-sub">${UI_TEXT[lang].p2p_lan_sub}</span>
+            </label>
           </div>
         `;
         body.appendChild(row);
-        const cb = row.querySelector('#delivery_enable');
-        const opts = row.querySelector('#p2p_options');
-        cb.addEventListener('change', () => { opts.style.display = cb.checked ? 'flex' : 'none'; updateCounter(); });
         return;
       }
-      const row = document.createElement('label');
-      row.className = 'item';
-      row.innerHTML = `
-        <input type="checkbox" id="${item.id}"
-          data-reg="${encodeURIComponent(item.reg)}"
-          data-ps="${encodeURIComponent(JSON.stringify(item.ps))}">
+
+      const label = document.createElement('label');
+      label.className = 'item';
+      label.innerHTML = `
+        <input type="checkbox" id="${item.id}" onchange="updateCounter()">
         <div class="item-info">
-          <div class="item-name">${item.name}</div>
-          <div class="item-desc">${item.desc}</div>
+          <div class="item-name">${item.name[lang]}</div>
+          <div class="item-desc">${item.desc[lang]}</div>
         </div>
       `;
-      body.appendChild(row);
-    });
-
-    section.appendChild(header);
-    section.appendChild(body);
-    app.appendChild(section);
-
-    header.querySelector('.toggle-all-btn').addEventListener('click', e => {
-      e.preventDefault();
-      const cbs = body.querySelectorAll('input[type="checkbox"]');
-      const allChecked = [...cbs].every(c => c.checked);
-      cbs.forEach(c => c.checked = !allChecked);
-      const p2pOpts = body.querySelector('#p2p_options');
-      const p2pCb = body.querySelector('#delivery_enable');
-      if (p2pOpts && p2pCb) p2pOpts.style.display = p2pCb.checked ? 'flex' : 'none';
-      e.target.textContent = allChecked ? '全選択' : '全解除';
-      updateCounter();
+      body.appendChild(label);
     });
   });
+}
 
-  // actions
-  const actions = document.createElement('div');
-  actions.className = 'actions';
-  actions.innerHTML = `
-    <button class="btn btn-outline" id="selectAll">すべて選択</button>
-    <button class="btn btn-primary" id="generate" disabled>▶ 出力を生成</button>
-    <button class="btn btn-secondary" id="clearAll">クリア</button>
-  `;
-  app.appendChild(actions);
+function toggleP2P() {
+  const cb = document.getElementById('delivery_enable');
+  const opts = document.getElementById('p2p_options');
+  if (opts) opts.style.display = cb && cb.checked ? 'flex' : 'none';
+  updateCounter();
+}
 
-  // output panel
-  const panel = document.createElement('div');
-  panel.id = 'output-panel';
-  panel.innerHTML = `
-    <div class="output-header">
-      <span class="output-title" id="output-title">// OUTPUT</span>
-      <span class="output-meta" id="output-meta"></span>
-      <button class="copy-btn" id="copy-btn">📋 コピー</button>
-    </div>
-    <div class="output-instructions" id="output-instructions"></div>
-    <textarea id="output-code" readonly spellcheck="false"></textarea>
-    <div class="warn-bar">⚠ HIGH リスク項目は適用前に復元ポイントの作成を推奨。レジストリ変更は自己責任で。</div>
-  `;
-  app.appendChild(panel);
-
-  const footer = document.createElement('footer');
-  footer.textContent = '— win11 silencer — レジストリ変更は自己責任で —';
-  app.appendChild(footer);
-
-  document.addEventListener('change', updateCounter);
-  document.getElementById('selectAll').addEventListener('click', () => {
-    document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = true);
-    const p2pOpts = document.getElementById('p2p_options');
-    if (p2pOpts) p2pOpts.style.display = 'flex';
-    document.querySelectorAll('.toggle-all-btn').forEach(b => b.textContent = '全解除');
-    updateCounter();
+function toggleSec(id) {
+  const cbs = document.querySelectorAll(`#body-${id} input[type="checkbox"]`);
+  if(cbs.length === 0) return;
+  const allChecked = [...cbs].every(c => c.checked);
+  cbs.forEach(c => {
+    c.checked = !allChecked;
+    if(c.id === 'delivery_enable') toggleP2P();
   });
-  document.getElementById('clearAll').addEventListener('click', () => {
-    document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
-    const p2pOpts = document.getElementById('p2p_options');
-    if (p2pOpts) p2pOpts.style.display = 'none';
-    document.querySelectorAll('.toggle-all-btn').forEach(b => b.textContent = '全選択');
-    updateCounter();
-    document.getElementById('output-panel').style.display = 'none';
-  });
-  document.getElementById('generate').addEventListener('click', generate);
-  document.getElementById('copy-btn').addEventListener('click', () => {
-    const code = document.getElementById('output-code');
-    navigator.clipboard.writeText(code.value).then(() => {
-      const btn = document.getElementById('copy-btn');
-      btn.textContent = '✓ コピーしました';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = '📋 コピー'; btn.classList.remove('copied'); }, 2000);
-    });
-  });
-
   updateCounter();
 }
 
 function updateCounter() {
-  const all = [...document.querySelectorAll('input[type="checkbox"]')];
-  const checked = all.filter(c => c.checked).length;
-  document.getElementById('counter').innerHTML = `選択中: <strong>${checked}</strong> / ${all.length} 項目`;
-  const p2pEnabled = document.getElementById('delivery_enable')?.checked;
-  const normal = all.filter(c => c.checked && c.id !== 'delivery_enable').length;
-  document.getElementById('generate').disabled = normal === 0 && !p2pEnabled;
+  const all = document.querySelectorAll('input[type="checkbox"]:not([name="p2p_mode"])');
+  const checked = [...all].filter(c => c.checked).length;
+  document.getElementById('counter').innerHTML = UI_TEXT[lang].counter.replace('{count}', checked).replace('{total}', all.length);
+  document.getElementById('btn-generate').disabled = checked === 0;
+  
+  document.querySelectorAll('.toggle-all-btn').forEach(btn => {
+    const secId = btn.closest('.section').querySelector('.section-body').id.replace('body-', '');
+    const secCbs = document.querySelectorAll(`#body-${secId} input[type="checkbox"]:not([name="p2p_mode"])`);
+    const allSecChecked = [...secCbs].every(c => c.checked);
+    btn.textContent = allSecChecked ? UI_TEXT[lang].deselectAll : UI_TEXT[lang].selectAll;
+  });
 }
 
-function buildContent(fmt) {
-  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')];
-  const p2pEnabled = document.getElementById('delivery_enable')?.checked;
-  const now = new Date().toLocaleString('ja-JP');
+function buildContent() {
+  const now = new Date().toLocaleString(lang === 'ja' ? 'ja-JP' : 'en-US');
   let content = '';
 
-  if (fmt === 'reg') {
-    content += `Windows Registry Editor Version 5.00\n; Win11 Silencer — ${now}\n; 適用後に再起動を推奨\n\n`;
-    checked.forEach(cb => {
-      if (cb.id === 'delivery_enable') return;
-      const label = cb.closest('.item').querySelector('.item-name').textContent;
-      content += `; ---- ${label} ----\n${decodeURIComponent(cb.dataset.reg)}\n\n`;
+  if (currentFormat === 'reg') {
+    content += `Windows Registry Editor Version 5.00\n; Win11 Silencer — ${now}\n; Please Restart PC after applying\n\n`;
+    SECTIONS.forEach(sec => {
+      sec.items.forEach(item => {
+        const cb = document.getElementById(item.id === 'delivery' ? 'delivery_enable' : item.id);
+        if (cb && cb.checked) {
+          if (item.isP2P) {
+            const mode = document.querySelector('input[name="p2p_mode"]:checked')?.value || 'disable';
+            const val = mode === 'disable' ? '00000063' : '00000001';
+            content += `; ---- ${item.name[lang]} ----\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:${val}\n"DOPercentageMaxUploadBandwidth"=dword:00000000\n\n`;
+          } else {
+            content += `; ---- ${item.name[lang]} ----\n${item.reg}\n\n`;
+          }
+        }
+      });
     });
-    if (p2pEnabled) {
-      const mode = document.querySelector('input[name="p2p_mode"]:checked')?.value || 'disable';
-      const val = mode === 'disable' ? '00000063' : '00000001';
-      content += `; ---- Delivery Optimization（P2P配信）----\n[HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization]\n"DODownloadMode"=dword:${val}\n"DOPercentageMaxUploadBandwidth"=dword:00000000\n\n`;
-    }
   } else {
-    content += `# Win11 Silencer — ${now}\n# 管理者権限のPowerShellで実行\n\n`;
-    checked.forEach(cb => {
-      if (cb.id === 'delivery_enable') return;
-      const label = cb.closest('.item').querySelector('.item-name').textContent;
-      const ps = JSON.parse(decodeURIComponent(cb.dataset.ps));
-      content += `# ---- ${label} ----\n${ps.join('\n')}\n\n`;
+    content += `# Win11 Silencer — ${now}\n# Run as Administrator in PowerShell\n\n`;
+    SECTIONS.forEach(sec => {
+      sec.items.forEach(item => {
+        const cb = document.getElementById(item.id === 'delivery' ? 'delivery_enable' : item.id);
+        if (cb && cb.checked) {
+          if (item.isP2P) {
+            const mode = document.querySelector('input[name="p2p_mode"]:checked')?.value || 'disable';
+            const val = mode === 'disable' ? 99 : 1;
+            content += `# ---- ${item.name[lang]} ----\nreg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization" /v DODownloadMode /t REG_DWORD /d ${val} /f\nreg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization" /v DOPercentageMaxUploadBandwidth /t REG_DWORD /d 0 /f\n\n`;
+          } else {
+            content += `# ---- ${item.name[lang]} ----\n${item.ps.join('\n')}\n\n`;
+          }
+        }
+      });
     });
-    if (p2pEnabled) {
-      const mode = document.querySelector('input[name="p2p_mode"]:checked')?.value || 'disable';
-      const val = mode === 'disable' ? 99 : 1;
-      content += `# ---- Delivery Optimization（P2P配信）----\nreg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization" /v DODownloadMode /t REG_DWORD /d ${val} /f\nreg add "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization" /v DOPercentageMaxUploadBandwidth /t REG_DWORD /d 0 /f\n\n`;
-    }
-    content += `Write-Host "完了。PCを再起動してください。" -ForegroundColor Cyan\n`;
+    content += `Write-Host "Complete. Please Restart your PC." -ForegroundColor Cyan\n`;
   }
   return content;
 }
 
-function refreshOutput() {
-  const panel = document.getElementById('output-panel');
-  if (panel.style.display === 'none' || !panel.style.display) return;
-  const fmt = currentFormat;
-  document.getElementById('output-code').value = buildContent(fmt);
-  updateOutputMeta(fmt);
-}
-
-function updateOutputMeta(fmt) {
-  const checked = [...document.querySelectorAll('input[type="checkbox"]:checked')];
-  const p2pEnabled = document.getElementById('delivery_enable')?.checked;
-  const count = checked.filter(c => c.id !== 'delivery_enable').length + (p2pEnabled ? 1 : 0);
-  document.getElementById('output-title').textContent = fmt === 'reg' ? '// .reg — レジストリエディタ用' : '// .ps1 — PowerShell用';
-  document.getElementById('output-meta').textContent = `${count} 項目 | ${new Date().toLocaleString('ja-JP')}`;
-  const steps = INSTRUCTIONS[fmt];
-  document.getElementById('output-instructions').innerHTML =
-    `<strong>適用手順</strong> &nbsp;` +
-    steps.map((s, i) => `<div class="step"><span class="step-num">0${i+1}.</span><span>${s}</span></div>`).join('');
-}
-
 function generate() {
-  const fmt = currentFormat;
-  const content = buildContent(fmt);
-  document.getElementById('output-code').value = content;
-  updateOutputMeta(fmt);
+  document.getElementById('output-code').value = buildContent();
+  document.getElementById('output-title').textContent = currentFormat === 'reg' ? '// .reg OUTPUT' : '// .ps1 OUTPUT';
+  
+  const all = document.querySelectorAll('input[type="checkbox"]:not([name="p2p_mode"])');
+  const checkedCount = [...all].filter(c => c.checked).length;
+  const now = new Date().toLocaleString(lang === 'ja' ? 'ja-JP' : 'en-US');
+  document.getElementById('output-meta').textContent = `${checkedCount} items | ${now}`;
+  
+  const steps = currentFormat === 'reg' ? UI_TEXT[lang].reg_steps : UI_TEXT[lang].ps1_steps;
+  document.getElementById('output-instructions').innerHTML = `<strong>${UI_TEXT[lang].inst_title}</strong>` + 
+    steps.map((s, i) => `<div class="step"><span class="step-num">0${i+1}.</span><span>${s}</span></div>`).join('');
+  
   const panel = document.getElementById('output-panel');
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  // reset copy button
+  
   const btn = document.getElementById('copy-btn');
-  btn.textContent = '📋 コピー';
+  btn.textContent = UI_TEXT[lang].copy;
   btn.classList.remove('copied');
 }
 
-buildUI();
+// Event Listeners
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    lang = btn.dataset.lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b === btn));
+    const wasPanelOpen = document.getElementById('output-panel').style.display === 'block';
+    updateUI();
+    // 状態を復元 (選択されているチェックボックス等)
+    if(wasPanelOpen) generate();
+  });
+});
+
+document.querySelectorAll('.fmt-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFormat = btn.dataset.fmt;
+    document.querySelectorAll('.fmt-btn').forEach(b => b.classList.toggle('active', b === btn));
+    if (document.getElementById('output-panel').style.display === 'block') generate();
+  });
+});
+
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  document.querySelectorAll('input[type="checkbox"]:not([name="p2p_mode"])').forEach(c => c.checked = true);
+  toggleP2P();
+});
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+  document.querySelectorAll('input[type="checkbox"]:not([name="p2p_mode"])').forEach(c => c.checked = false);
+  document.getElementById('output-panel').style.display = 'none';
+  toggleP2P();
+});
+
+document.getElementById('btn-generate').addEventListener('click', generate);
+
+document.getElementById('copy-btn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('output-code').value).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = UI_TEXT[lang].copied;
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = UI_TEXT[lang].copy; btn.classList.remove('copied'); }, 2000);
+  });
+});
+
+// Init
+document.querySelector('[data-lang="ja"]').classList.add('active');
+updateUI();
 </script>
 </body>
 </html>
