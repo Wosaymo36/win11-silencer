@@ -32,7 +32,7 @@ Windows 11 に標準で搭載されている、以下の機能を簡単に無効
 - **システム最適化 (System Optimization)**: Edge background suppression, Telemetry minimization.
 
 ## 🚀 使い方 / How to Use
-1. [Win11 Silencer を開く](あなたのGitHub PagesのURL)
+1. [Win11 Silencer を開く](https://wosaymo36.github.io/win11-silencer/)
 2. 止めたい機能にチェックを入れます。 / Check the features you want to disable.
 3. **「出力を生成 (Generate)」**ボタンを押し、コードをコピーします。 / Click "Generate" and copy the code.
 
